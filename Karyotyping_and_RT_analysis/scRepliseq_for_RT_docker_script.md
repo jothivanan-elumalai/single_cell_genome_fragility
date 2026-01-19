@@ -5,9 +5,18 @@
 # Description:
 #   Complete pipeline for analyzing single-cell replication timing from
 #   sequencing data. Processes FASTQ files through adapter trimming, alignment,
-#   quality control, mappability correction, and replication timing analysis.
-#   Implements methods from Miura et al., Nat. Protoc. 2020 and Elumalai & Hiratani,
-#   XXX. 2026.
+#   quality control, mappability correction, and replication timing analysis. This is an
+#   updated script of [scRepliseq v1.4](https://github.com/kuzobuta/scRepliseq-Pipeline)
+#
+# Updates in scRepliseq v1.5 include:
+#   – Cutadapt replaced with TrimGalore that enable multithread usage
+#   – Updated packages: bwa (0.7.19), samtools (1.22), picard-tools (2.18.7) and others
+#   – Updated R packages: R (4.4.3) and AneuFinder (1.34.0)
+#   – Added log2repliscore RT and chromosome break region detection analysis
+#   – Updated docker and conda environment files are provided
+#   (NOTE: If you do not use docker, install [samstat](https://github.com/timolassmann/samstat) on your own)
+#   (NOTE: Below explanation is only for RT analysis using docker)
+#
 #
 # Authors: Jothivanan Elumalai
 # License: MIT
@@ -16,17 +25,14 @@
 #
 # Citation:
 #   If you use this pipeline, please cite:
+#   - Takahashi et al., Nature Genetics 2020 (scRepli-seq)
 #   - Miura et al., Nature Protocols 2020 (scRepli-seq protocol)
-#   - Elumalai & Hiratani, XXX. 2026 (log2repliscore method)
+#   - Elumalai & Hiratani, in revision (log2repliscore RT method)
 #
 # Requirements:
 #   - Docker (for containerized environment)
 #   - Reference genome with BWA index
 #   - Blacklist regions file
-#
-# Docker Image:
-#   GitHub: https://github.com/jothivanan-elumalai/single_cell_genome_fragility
-#   Image: screpliseq:v1.5
 #
 # Pipeline Overview:
 #   Step 0: Setup directory structure
@@ -60,13 +66,6 @@
 #       ├── HMM/            # HMM binarization results
 #       └── Log2_repliscore/ # RT values
 #
-# Key Concepts:
-#   - MAD score: Measure of data quality for single cells
-#   - Repliscore: Percentage of genome replicated (0-100%)
-#   - 2-HMM: Binary classification (replicated/unreplicated)
-#   - log2repliscore: Continuous RT values across cell cycle
-#   - Mappability correction using G1 control cells
-#
 # Usage:
 #   1. Build Docker image (first time only)
 #   2. Edit "Configuration" section below
@@ -77,6 +76,7 @@
 # Important Notes:
 #   - Use R1 reads only if paired-end (pairs mostly overlap)
 #   - File extension must be .fastq.gz (not .fq.gz)
+#   - Minimum of 1 M uniqely mapped reads with MAPQ >=10 is required
 #   - Select G1 cells with most frequent karyotype for control
 #   - log2repliscore method allows RT analysis across all cell cycle phases
 #
@@ -102,7 +102,7 @@ mount="/data/"                     # Mount point inside Docker container
 genome_name="hg19"
 genome_index="path/to/reference_genome/hg19.fa"          # BWA-indexed FASTA
 genome_file="path/to/reference_genome/hg19.fa.fai"       # Genome index file
-blacklist="path/to/blacklist/hg19-blacklist.v2.bed"      # Blacklist regions
+blacklist="path/to/blacklist/hg19-blacklist.bed"         # Blacklist regions
 
 # Adapter sequences
 index_seq="AGATCGGAAGAGC"                                 # Illumina adapter
@@ -145,14 +145,7 @@ else
     echo "✓ Repository already exists, skipping clone"
 fi
 
-# Verify Docker image exists
-if ! docker images | grep -q "screpliseq"; then
-    echo "ERROR: Docker image screpliseq not found!"
-    echo "Please build the image first."
-    exit 1
-fi
-
-echo ""
+# Verify Docker image exists with "docker images" command
 
 ## ---------------------------------------------------------------
 ## Step 0: Setup Directory Structure
@@ -410,29 +403,5 @@ echo "✓ log2repliscore RT values computed"
 echo ""
 
 ## ---------------------------------------------------------------
-## Pipeline Complete
+## END
 ## ---------------------------------------------------------------
-
-echo "=========================================================="
-echo "Pipeline Complete!"
-echo "=========================================================="
-echo ""
-echo "Output directory structure:"
-echo "  ${Project_dir}/"
-echo "  ├── Aneu_analysis/"
-echo "  │   ├── MAD_score/      # Quality metrics"
-echo "  │   ├── G1_control/     # Control cells"
-echo "  │   ├── HMM/            # Binarized RT"
-echo "  │   └── Log2_repliscore/ # Continuous RT values"
-echo "  ├── bam/                # Aligned reads"
-echo "  └── fastqc/             # Quality reports"
-echo ""
-echo "Citations:"
-echo "  - Takahashi et al., Nature Genetics 2019"
-echo "  - Miura et al., Nature Protocols 2020"
-echo "  - Elumalai & Hiratani, XXX. 2026"
-echo "=========================================================="
-
-################################################################################
-## End
-################################################################################

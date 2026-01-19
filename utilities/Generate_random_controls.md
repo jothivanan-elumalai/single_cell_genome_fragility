@@ -202,38 +202,6 @@ cat "$OUTPUT_EARLY" "$OUTPUT_MID" "$OUTPUT_LATE" > "$OUTPUT_COMBINED"
 echo "  - Combined total: $(wc -l < "$OUTPUT_COMBINED") regions"
 echo ""
 
-## ---------------------------------------------------------------
-## Summary Statistics
-## ---------------------------------------------------------------
-
-echo "==================================================="
-echo "Summary"
-echo "==================================================="
-echo ""
-echo "Generated Files:"
-echo "  1. $OUTPUT_ALL"
-echo "     - All randomized controls (100 iterations)"
-echo ""
-echo "  2. $OUTPUT_EARLY"
-echo "     - Early S-phase controls"
-echo ""
-echo "  3. $OUTPUT_MID"
-echo "     - Mid S-phase controls"
-echo ""
-echo "  4. $OUTPUT_LATE"
-echo "     - Late S-phase controls"
-echo ""
-echo "  5. $OUTPUT_COMBINED"
-echo "     - All categorized controls combined"
-echo ""
-echo "RT Classification Thresholds:"
-echo "  - Early: RT > $RT_EARLY_THRESHOLD"
-echo "  - Mid: $RT_LATE_THRESHOLD ≤ RT ≤ $RT_EARLY_THRESHOLD"
-echo "  - Late: RT < $RT_LATE_THRESHOLD"
-echo ""
-echo "✓ Analysis complete!"
-echo "==================================================="
-
 ################################################################################
 ## End
 ################################################################################

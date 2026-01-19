@@ -1,8 +1,8 @@
 # Use Ubuntu 24.04 as base
 FROM ubuntu:24.04
 
-LABEL authors="Jothivanan Elumalai <jothivanan.elumalai[at]riken.jp and Hisashi Miura <hisashi.miura[at]riken.jp>" \
-      description="Docker image for replication timing and karyotype analysis at the single-cell level"            
+LABEL authors="Jothivanan Elumalai <jothivanan.elumalai[at]riken.jp>" \
+      description="Docker image for replication timing and karyotype analysis at the single-cell level"
 
 # Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
