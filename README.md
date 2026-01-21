@@ -1,13 +1,13 @@
 # Single-Cell Genome Fragility
 
-A comprehensive bioinformatics pipeline for analyzing karyotype (chromosome copy number), chromosome break regions, and replication timing in single cells using scRepli-seq (single-cell replication timing sequencing) data.
+A comprehensive bioinformatics pipeline for analyzing karyotype (chromosome copy number), chromosome break regions, and replication timing (RT) in single cells using scRepli-seq (single-cell RT sequencing) data.
 
 ## Overview
 
 This project provides tools and pipelines for:
 - **Karyotyping and RT analysis**:
   - Identifying copy number variations (CNVs) and chromosome break regions in single G1 cells using E-Divisive segmentation
-  - Measuring DNA replication timing at single-cell or small-scale resolution
+  - Measuring DNA RT at using single cells, small-scale population and E/L BrdU-IP method
 - **Utilities**: Other scripts used in Elumalai & Hiratani, *in revision*
 
 ## Input Requirements for scRepli-seq analysis
@@ -60,7 +60,8 @@ If you are using conda, please install [samstat](https://github.com/TimoLassmann
 ## Documentation
 
 - [scRepli-seq Karyotyping Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_karyotyping_docker_script.md) - Complete guide for karyotyping analysis
-- [scRepli-seq RT Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_RT_docker_script.md) - Complete guide for copy-number based replication timing analysis
+- [scRepli-seq RT Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_RT_docker_script.md) - Complete guide for copy-number based RT analysis
+- [E/L BrdU-IP Repli-seq RT Pipeline](Karyotyping_and_RT_analysis/EL_BrdUIP_repliseq_RT_docker_script.md) - Complete guide for Early/Late BrdU-IP RT analysis
 
 ## Publications & Citation
 
@@ -70,7 +71,10 @@ If you use this pipeline, please cite:
   - Takahashi et al., Nature Genetics 2019
   - Miura et al., Nature Protocols 2020
 
-- **This work:**
+- **Original E/L BrdU-IP Repli-seq method:**
+  - Hiratani et al., PLOS Biology 2008
+
+- **This work (added log2repliscore RT and scRepli-seq for karyotyping pipelines)**
   - Elumalai & Hiratani, *in revision*
 
 ## License
