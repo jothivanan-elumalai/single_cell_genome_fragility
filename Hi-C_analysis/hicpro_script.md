@@ -18,7 +18,7 @@
 #   - Elumalai and Hiratani, in revision
 #
 # Requirements:
-#   - Conda environment with HiC-Pro installed
+#   - Conda environment with [HiC-Pro](https://github.com/nservant/HiC-Pro) installed
 #   - Juicer tools JAR file
 #   - Bowtie2 indexed reference genome
 #   - tmux (optional)

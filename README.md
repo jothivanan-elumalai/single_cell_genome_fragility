@@ -9,7 +9,7 @@ This project provides tools and pipelines for:
   - Identifying copy number variations (CNVs) and chromosome break regions in single G1 cells using E-Divisive segmentation
   - Measuring DNA RT at using single cells, small-scale population and E/L BrdU-IP method
 - **Hi-C analysis**:
-  - Hi-C analysis using Hi-C Pro
+  - Scripts used in Elumalai and Hiratani, in revision, for Hi-C analysis using [HiC-Pro](https://github.com/nservant/HiC-Pro)
 - **Utilities**: Other scripts used in Elumalai & Hiratani, *in revision*
 
 ## Input Requirements for scRepli-seq analysis
