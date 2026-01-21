@@ -5,8 +5,9 @@ A comprehensive bioinformatics pipeline for analyzing karyotype (chromosome copy
 ## Overview
 
 This project provides tools and pipelines for:
-- **Karyotyping and break detection**: Identifying copy number variations (CNVs) and chromosome break regions in single G1 cells using E-Divisive segmentation
-- **Replication Timing (RT) Analysis**: Measuring DNA replication timing at single-cell or small-scale resolution
+- **Karyotyping and RT analysis**:
+  - Identifying copy number variations (CNVs) and chromosome break regions in single G1 cells using E-Divisive segmentation
+  - Measuring DNA replication timing at single-cell or small-scale resolution
 - **Utilities**: Other scripts used in Elumalai & Hiratani, *in revision*
 
 ## Input Requirements for scRepli-seq analysis
