@@ -1,6 +1,6 @@
 # Single-Cell Genome Fragility
 
-A comprehensive bioinformatics pipeline for analyzing chromosome fragility, DNA break regions, and replication timing in single cells using scRepli-seq (single-cell replication timing sequencing) data.
+A comprehensive bioinformatics pipeline for analyzing karyotype (chromosome copy number), chromosome break regions, and replication timing in single cells using scRepli-seq (single-cell replication timing sequencing) data.
 
 ## Overview
 
