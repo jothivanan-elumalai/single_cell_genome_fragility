@@ -66,7 +66,7 @@ If you are using conda, please install [samstat](https://github.com/TimoLassmann
 If you use this pipeline, please cite:
 
 - **Original scRepli-seq method:**
-  - Takahashi et al., Nature Genetics 2020
+  - Takahashi et al., Nature Genetics 2019
   - Miura et al., Nature Protocols 2020
 
 - **This work:**
