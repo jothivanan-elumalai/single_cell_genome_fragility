@@ -47,6 +47,7 @@ cd single_cell_genome_fragility/Karyotyping_and_RT_analysis
 conda env create -n screpliseq -f screpliseq.yml
 conda activate screpliseq
 ```
+If you are using conda, please install [samstat](https://github.com/TimoLassmann/samstat)
 
 ## Updates in scRepli-seq v1.5 include
 - Cutadapt replaced with TrimGalore and this enable multithread usage
