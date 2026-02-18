@@ -17,7 +17,7 @@ dependencies:
   - r-ggplot2=3.5.2
   - r-gtable=0.3.6
   - r-pracma=2.4.4
-  - r-optparse-1.7.5
+  - r-optparse=1.7.5
   - samtools=1.22
   - seqtk=1.5
   - trim-galore=0.6.2
