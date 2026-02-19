@@ -31,19 +31,6 @@
 #
 # Requirements:
 #   - Docker (for containerized environment)
-#   - Reference genome with BWA index
-#   - Blacklist regions file
-#
-# Pipeline Overview:
-#   Step 0: Setup directory structure
-#   Step 1: Adapter trimming (Trim Galore)
-#   Step 2: Read alignment (BWA) and post-processing
-#   Step 3: Generate fragment and bin files (AneuFinder)
-#   Step 4: Quality control (MAD scores, tag density)
-#   Step 5: G1 control preparation for mappability correction
-#   Step 6: 2-HMM binarized RT calculation
-#   Step 7: Repliscore calculation (% genome replicated)
-#   Step 8: log2repliscore RT value computation
 #
 # Input Files:
 #   - Raw sequencing reads (FASTQ.GZ format, single-end or R1 from paired-end)
@@ -73,6 +60,17 @@
 #   4. Run pipeline step by step
 #   5. Monitor quality metrics at each step
 #
+# Pipeline Overview:
+#   Step 0: Setup directory structure
+#   Step 1: Adapter trimming (Trim Galore)
+#   Step 2: Read alignment (BWA) and post-processing
+#   Step 3: Generate fragment and bin files (AneuFinder)
+#   Step 4: Quality control (MAD scores, tag density)
+#   Step 5: G1 control preparation for mappability correction
+#   Step 6: 2-HMM binarized RT calculation
+#   Step 7: Repliscore calculation (% genome replicated)
+#   Step 8: log2repliscore RT value computation
+#
 # Important Notes:
 #   - Use R1 reads only if paired-end (pairs mostly overlap)
 #   - File extension must be .fastq.gz (not .fq.gz)
@@ -81,9 +79,6 @@
 #   - log2repliscore method allows RT analysis across all cell cycle phases
 #
 ################################################################################
-
-set -e  # Exit on error
-set -u  # Exit on undefined variable
 
 ## ---------------------------------------------------------------
 ## Configuration - EDIT THESE SETTINGS
@@ -114,14 +109,8 @@ threads=20              # Adjust based on your system
 
 # Analysis parameters
 binsize="binsize_1e+05"  # 100 Kb bins for HMM
-somy="2-somy"            # Use "1-somy" for early S-phase samples
+somy="2-somy"            # Use "1-somy" for G1 or early S-phase samples
 srt_step=1               # 1 for ascending repliscore order, 0 for no ordering
-
-## ---------------------------------------------------------------
-## Docker Command Setup
-## ---------------------------------------------------------------
-
-docker_command="docker run --rm -it -v ${in_dir}:${mount}:rw ${docker_version}"
 
 ## ---------------------------------------------------------------
 ## Build Docker Image (First Time Only)
@@ -145,7 +134,13 @@ else
     echo "✓ Repository already exists, skipping clone"
 fi
 
-# Verify Docker image exists with "docker images" command
+# Verify screpliseq Docker image exists by typing "docker images" in shell
+
+## ---------------------------------------------------------------
+## Docker Command Setup
+## ---------------------------------------------------------------
+
+docker_command="docker run --rm -it -v ${in_dir}:${mount}:rw ${docker_version}"
 
 ## ---------------------------------------------------------------
 ## Step 0: Setup Directory Structure
@@ -157,8 +152,6 @@ ${docker_command} Step0_setup_directories.sh ${mount}/${Project_dir}
 echo "✓ Directory structure created"
 echo ""
 echo "IMPORTANT: Copy your FASTQ.GZ files to: ${in_dir}/${Project_dir}/fastq/"
-echo "Press Enter when files are ready, or Ctrl+C to exit..."
-read -r
 
 ## ---------------------------------------------------------------
 ## Quality Check: FastQC on Raw Reads
@@ -238,7 +231,7 @@ for file in "${files[@]}"; do
     ${docker_command} samstat -t ${threads} ${mount}/${Project_dir}/bam/${BAM}
 done
 echo "✓ Quality check complete"
-echo "IMPORTANT: Verify that ≥50% of reads have MAPQ > 30"
+echo "IMPORTANT: Verify that ≥50% of reads have MAPQ >= 30"
 echo ""
 
 ## ---------------------------------------------------------------
@@ -307,10 +300,15 @@ echo "3. Update the G1 bin file paths below"
 echo ""
 echo "Example karyotype check (modify bin_file path):"
 echo ""
-# Example for one G1 cell - USER MUST UPDATE the bin file for each G1 cell
+# Example for two G1 cell - USER MUST UPDATE the bin file for each G1 cell
 rscript=/usr/local/bin/util/Step5a_R_G1_karyotype.R
+
 ${docker_command} Rscript --vanilla $rscript \
-    ${mount}/${Project_dir}/Aneu_analysis/bins/EXAMPLE_G1_cell_100k_mapq10_blacklist_bin.Rdata \
+    ${mount}/${Project_dir}/Aneu_analysis/bins/EXAMPLE_G1_cell1_100k_mapq10_blacklist_bin.Rdata \
+    ${mount}/${Project_dir}/Aneu_analysis/G1_control
+
+${docker_command} Rscript --vanilla $rscript \
+    ${mount}/${Project_dir}/Aneu_analysis/bins/EXAMPLE_G1_cell2_100k_mapq10_blacklist_bin.Rdata \
     ${mount}/${Project_dir}/Aneu_analysis/G1_control
 
 ## ---------------------------------------------------------------
@@ -325,8 +323,8 @@ echo ""
 # Example for two G1 cells - USER MUST UPDATE the fragment files
 rscript=/usr/local/bin/util/Step5b_Merge_fragment_Rdata.R
 ${docker_command} Rscript --vanilla $rscript \
-    ${mount}/${Project_dir}/Aneu_analysis/fragment/G1_cell1_fragment.Rdata \
-    ${mount}/${Project_dir}/Aneu_analysis/fragment/G1_cell2_fragment.Rdata \
+    ${mount}/${Project_dir}/Aneu_analysis/fragment/EXAMPLE_G1_cell1_100k_mapq10_blacklist_fragment.Rdata \
+    ${mount}/${Project_dir}/Aneu_analysis/fragment/EXAMPLE_G1_cell2_100k_mapq10_blacklist_fragment.Rdata \
     -o ${mount}/${Project_dir}/Aneu_analysis/G1_control/Merged_control_G1.fragment.Rdata
 
 ## ---------------------------------------------------------------
@@ -381,7 +379,7 @@ echo ""
 echo "Step 8: log2repliscore RT Value Computation"
 echo "-----------------------------------------------------------"
 echo "Computing continuous RT values across cell cycle..."
-echo "Window: 100 Kb, Sliding: 40 Kb"
+echo "Window: 200 Kb, Sliding: 40 Kb"
 echo ""
 
 rscript=/usr/local/bin/util/Step8_R_log2_repliscore_RT_scores.R
