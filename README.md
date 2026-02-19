@@ -1,6 +1,6 @@
 # Single-Cell Genome Fragility
 
-A comprehensive bioinformatics pipeline for analyzing karyotype (chromosome copy number), chromosome break regions, and replication timing (RT) in single cells using scRepli-seq (single-cell RT sequencing) data.
+Pipelines used in Elumalai & Hiratani, *in revision*
 
 ## Overview
 
@@ -12,7 +12,16 @@ This project provides tools and pipelines for:
   - Scripts used in Elumalai and Hiratani, in revision, for Hi-C analysis using [HiC-Pro](https://github.com/nservant/HiC-Pro)
 - **Utilities**: Other scripts used in Elumalai & Hiratani, *in revision*
 
+## Documentation (start with these files)
+
+- [scRepli-seq Karyotyping Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_karyotyping_docker_script.md) - Complete guide for karyotyping analysis
+- [scRepli-seq RT Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_RT_docker_script.md) - Complete guide for copy-number based RT analysis
+- [E/L BrdU-IP Repli-seq RT Pipeline](Karyotyping_and_RT_analysis/EL_BrdUIP_repliseq_RT_docker_script.md) - Complete guide for Early/Late BrdU-IP RT analysis
+
 ## Input Requirements for scRepli-seq analysis
+
+### Softwares
+- Docker (recommended) or Conda
 
 ### Sequencing Data
 - Raw sequencing reads in **fastq.gz format**
@@ -23,34 +32,6 @@ This project provides tools and pipelines for:
 - Genome index file (`.fai`)
 - [Blacklist regions file](https://github.com/Boyle-Lab/Blacklist)
 
-## Installation & Usage of scRepli-seq pipeline
-
-### Using Docker (Recommended)
-
-1. Build the Docker image:
-```bash
-if [[ ! -d "single_cell_genome_fragility" ]]; then
-    echo "Cloning repository and building Docker image..."
-    git clone https://github.com/jothivanan-elumalai/single_cell_genome_fragility.git
-    cd single_cell_genome_fragility/Karyotyping_and_RT_analysis
-    docker_version="screpliseq:v1.5"
-    docker build -t ${docker_version} .
-    cd ../..
-    echo "✓ Docker image built successfully"
-else
-    echo "✓ Repository already exists, skipping clone"
-fi
-```
-
-### Using Conda
-
-Install the environment using the provided `screpliseq.yml`:
-```bash
-cd single_cell_genome_fragility/Karyotyping_and_RT_analysis
-conda env create -n screpliseq -f screpliseq.yml
-conda activate screpliseq
-```
-If you are using conda, please install [samstat](https://github.com/TimoLassmann/samstat)
 
 ## Updates in scRepli-seq v1.5 include
 - Cutadapt replaced with TrimGalore and this enable multithread usage
@@ -59,11 +40,6 @@ If you are using conda, please install [samstat](https://github.com/TimoLassmann
 - Added log2repliscore RT and chromosome break region detection analysis
 - Updated docker and conda environment files are provided
 
-## Documentation
-
-- [scRepli-seq Karyotyping Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_karyotyping_docker_script.md) - Complete guide for karyotyping analysis
-- [scRepli-seq RT Pipeline](Karyotyping_and_RT_analysis/scRepliseq_for_RT_docker_script.md) - Complete guide for copy-number based RT analysis
-- [E/L BrdU-IP Repli-seq RT Pipeline](Karyotyping_and_RT_analysis/EL_BrdUIP_repliseq_RT_docker_script.md) - Complete guide for Early/Late BrdU-IP RT analysis
 
 ## Publications & Citation
 
