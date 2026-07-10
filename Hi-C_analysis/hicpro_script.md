@@ -15,7 +15,7 @@
 # Citation:
 #   If you use this pipeline, please cite:
 #   - Servant et al., Genome Biology 2015 (HiC-Pro)
-#   - Elumalai and Hiratani, in revision
+#   - Elumalai and Hiratani, Nature Communications 2026
 #
 # Requirements:
 #   - Conda environment with [HiC-Pro](https://github.com/nservant/HiC-Pro) installed
