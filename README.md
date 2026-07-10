@@ -53,7 +53,7 @@ If you use this pipeline, please cite:
   - Hiratani et al., PLOS Biology 2008
 
 - **This work (added log2repliscore RT and scRepli-seq for karyotyping pipelines)**
-  - Elumalai & Hiratani, *in revision*
+  - Elumalai & Hiratani, Nature Communications 2026
 
 ## License
 
