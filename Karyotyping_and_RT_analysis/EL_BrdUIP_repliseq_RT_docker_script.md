@@ -14,7 +14,7 @@
 #
 # Citation:
 #   If you use this pipeline, please cite:
-#   - Elumalai and Hiratani, in revision
+#   - Elumalai and Hiratani, Nature Communications 2026
 #   This method was first described in Hiratani et al., PLOS Biology 2008
 #
 # Requirements:
