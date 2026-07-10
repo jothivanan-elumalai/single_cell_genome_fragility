@@ -27,7 +27,7 @@
 #   If you use this pipeline, please cite:
 #   - Takahashi et al., Nature Genetics 2020 (scRepli-seq)
 #   - Miura et al., Nature Protocols 2020 (scRepli-seq protocol)
-#   - Elumalai & Hiratani, in revision (log2repliscore RT method)
+#   - Elumalai & Hiratani, Nature Communications 2026 (log2repliscore RT method)
 #
 # Requirements:
 #   - Docker (for containerized environment)
